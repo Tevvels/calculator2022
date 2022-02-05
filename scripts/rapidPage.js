@@ -92,50 +92,57 @@ maybe using react trying to use just vanilla js?
 
 */
 
-
-const box = document.querySelector('.box');
-const roadblock = document.querySelector('.roadblock');
-a = 0;
-b = 0;
+// a = 0;
+// b = 0;
 
 
-box.addEventListener("keydown",(e)=>{
+// box.addEventListener("keydown",(e)=>{
 
-    if(e.keyCode == 39){
-        a += 10;
-        gsap.to(".box",{x: a })
-    }
-    if(e.keyCode == 37){
-        a = a - 10;
-        gsap.to(".box",{x: a})
+//     if(e.keyCode == 39){
+//         a += 10;
+//         gsap.to(".box",{x: a })
+//     }
+//     if(e.keyCode == 37){
+//         a = a - 10;
+//         gsap.to(".box",{x: a})
 
-    }
-    if(e.keyCode == 38){
-        b = b - 10;
-        gsap.to(".box",{y: b})
-        gsap.to(".box",{y: b - b})
+//     }
+//     if(e.keyCode == 38){
+//         b = b - 10;
+//         gsap.to(".box",{y: b})
+//         gsap.to(".box",{y: b - b})
 
-    }
-    if(e.keyCode == 40){
-        b = b + 10;
-        gsap.to(".box",{y: b})
+//     }
+//     if(e.keyCode == 40){
+//         b = b + 10;
+//         gsap.to(".box",{y: b})
 
 
-    }
+//     }
     
-});
+// });
 
+const body = document.body;
 
 const item_one = document.querySelector(".item_one");
 const item_operator = document.querySelector(".item_operator");
 const item_two = document.querySelector(".item_two");
 const item_submit = document.querySelector(".item_submit");
 
-const numpad = ["clear","c m c",1,2,3,"+",4,5,6,"-",7,8,9,"*","#",0,".","/",];
+const numpad = ["clear","cc",1,2,3,"+",4,5,6,"-",7,8,9,"*","#",0,".","/",];
+
+
+let box = document.createElement("div");
+let buttonbox = document.createElement("div");
+let screen = document.createElement("div");
+box.setAttribute("class","container");
+buttonbox.setAttribute("class","buttonbox");
+screen.setAttribute("class","screen");
 
 numpad.map((item,index)=>{
 
 let button = document.createElement("button");
+button.setAttribute("class",item + ` button`);
 button.textContent = item;
 button.addEventListener('click',()=>{
     console.log(typeof(item));
@@ -144,11 +151,11 @@ button.addEventListener('click',()=>{
         hasdecimal = true;
     }
     if(isNaN(item)){
-        box.innerHTML = 0;
+        screen.innerHTML = 0;
     }
     if(!isNaN(item)){
         numberstring.push(item);
-        box.innerHTML = numberstring.join('');
+        screen.innerHTML = numberstring.join('');
     }
     if(item == "+" || item == "-" || item == "*" || item == "/"){
         hasdecimal = false;
@@ -173,8 +180,12 @@ button.addEventListener('click',()=>{
             console.log(previousnumberstring[previousnumberstring -1])
          
          if(previousnumberstring.length == 0){
-             equation.push(0);
-         }
+             equation[0] = 0;
+             if(previousoperator.length == 0){
+                equation[1] = "+";
+            }
+            
+            }
          
             if(previousnumberstring.length > 0 && previousoperator.length > 0){
                 equation.push(previousnumberstring[previousnumberstring.length - 1]);
@@ -191,6 +202,7 @@ button.addEventListener('click',()=>{
 if(numberstring.length > 0 ){
                 equation.push(numberstring.join(''));
             let answer = operate(equation[0],equation[1],equation[2]);
+            console.log(`answer ` + answer)
             previousequations.push(answer);
             hasdecimal = false;
             previousnumberstring.push(Number(equation[equation.length -1]));
@@ -199,7 +211,7 @@ if(numberstring.length > 0 ){
             numberstring = [];
         }
         else if(numberstring.length <= 0 && previousequations.length <= 0){
-            box.innerHTML = "nothing to calculate",
+            screen.innerHTML = "nothing to calculate",
             previousequations.push(0);
         }
     }
@@ -208,6 +220,8 @@ if(numberstring.length > 0 ){
     }
     if(item == "c m c"){
         previousequations = [];
+        previousnumberstring = [];
+        previousoperator = [];
     }
     
     console.log(`number string = ` + numberstring);
@@ -217,9 +231,11 @@ if(numberstring.length > 0 ){
     console.log(`previous equations = ` + previousequations);
 });
 
+body.appendChild(box);
+box.appendChild(screen);
+box.appendChild(buttonbox);
+buttonbox.appendChild(button);
 
-
-roadblock.appendChild(button);
 
 });
 
@@ -239,21 +255,21 @@ function operate(a,b,c){
     console.log(a,b,c)
 
     if(b == "+"){
-        box.innerHTML =  a + c;
+        screen.innerHTML =  a + c;
         return a + c;
     }
     if(b == "-"){
-        box.innerHTML =  a - c;
+        screen.innerHTML =  a - c;
         return a - c;
 
     }
     if(b == "*"){
-        box.innerHTML =  a * c;
+        screen.innerHTML =  a * c;
         return a * c;
 
     }
     if(b == "/"){
-        box.innerHTML =  a / c;
+        screen.innerHTML =  a / c;
         return a / c;
 
     }
