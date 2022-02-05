@@ -218,7 +218,7 @@ if(numberstring.length > 0 ){
     if(item == "clear"){
         numberstring = [];
     }
-    if(item == "c m c"){
+    if(item == "cc"){
         previousequations = [];
         previousnumberstring = [];
         previousoperator = [];
